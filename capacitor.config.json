@@ -1,0 +1,18 @@
+{
+  "appId": "fr.apkfold.fable",
+  "appName": "Fable",
+  "webDir": "dist",
+  "backgroundColor": "#0b0d0c",
+  "android": {
+    "backgroundColor": "#0b0d0c",
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "CapacitorHttp": { "enabled": false },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_fable",
+      "iconColor": "#C8F25A"
+    }
+  }
+}
