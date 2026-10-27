@@ -36,7 +36,7 @@ La clé de signature n'est pas dans le dépôt. GitHub Actions la lit dans le se
 - Type de contrat : Intérim, CDD, CDI, Autre — taux horaire brut, couleur.
 - **Heures supplémentaires** par semaine ou par jour, avec 2 paliers (ex. +25 % dès 35 h, +50 % dès 43 h).
 - **Heures de nuit** sur une plage réglable (21 h → 6 h par défaut) avec sa majoration.
-- **Dimanche** et **jours fériés** (calendrier français calculé, option **Alsace-Moselle** : Vendredi saint et 26 décembre).
+- **Dimanche** et **jours fériés** : calendrier **France métropolitaine (Paris)** par défaut, ou **Alsace-Moselle** (+ Vendredi saint et 26 décembre), réglable pour toutes les missions.
 - Cumul des majorations : additionnées ou seulement la plus forte ; nuit du samedi au dimanche comptée selon le jour de début ou heure par heure.
 - **Panier repas** chaque jour travaillé ou à partir d'un nombre d'heures, **indemnité de trajet** par jour.
 - **IFM** (intérim) ou **prime de précarité** (CDD) et **ICCP** (congés payés), 10 % + 10 % par défaut.
@@ -50,7 +50,7 @@ La clé de signature n'est pas dans le dépôt. GitHub Actions la lit dans le se
 
 **Le reste**
 - Rappel par notification aux jours et à l'heure choisis.
-- Thème sombre, clair ou automatique.
+- **Tout se personnalise** dans Réglages : thème sombre, noir (AMOLED), clair ou auto ; couleur principale et couleurs des majorations (palette ou couleur libre) ; polices ; taille du texte ; coins ; densité ; animations ; format des durées (7 h 30, 7h30 ou 7,5 h) ; mode discret qui masque les montants ; écran d'ouverture ; vue de l'historique. Couleur libre aussi pour chaque mission.
 - Sauvegarde / restauration en fichier `.json`, copie de secours automatique dans les fichiers privés de l'appli.
 - Aucune donnée ne quitte le téléphone : pas de compte, pas de serveur, pas de pub.
 

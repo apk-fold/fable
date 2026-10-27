@@ -7,12 +7,29 @@ import { parseHM, isValidIso } from './time.js';
 const KEY = 'fable.data.v1';
 export const DATA_VERSION = 1;
 
+export const DEFAULT_LOOK = {
+  accent: '#C8F25A',
+  colors: { sup: '#FFB547', night: '#A3ACFF', sun: '#FF8A7A', hol: '#F584C6' },
+  displayFont: 'unbounded',
+  bodyFont: 'manrope',
+  textScale: 1,
+  radius: 'normal',
+  density: 'comfort',
+  motion: true,
+};
+
 export const DEFAULT_SETTINGS = {
   netRate: 22,
   theme: 'dark',
   haptics: true,
   rounding: 0,
   reminder: { enabled: false, time: '19:30', days: [0, 1, 2, 3, 4] },
+  holidayRegion: 'fr',
+  look: structuredClone(DEFAULT_LOOK),
+  durationStyle: 'hm',
+  hideMoney: false,
+  startTab: '/',
+  historyView: 'list',
   lastMissionId: null,
   welcomed: false,
 };
@@ -42,12 +59,31 @@ export function normalizeEntry(e = {}) {
   };
 }
 
+const HEX = /^#[0-9a-f]{6}$/i;
+const hex = (v, d) => (HEX.test(String(v || '')) ? String(v).toUpperCase() : d);
+const oneOf = (v, list, d) => (list.includes(v) ? v : d);
+
+function normalizeLook(l = {}) {
+  const D = DEFAULT_LOOK;
+  const c = l.colors || {};
+  return {
+    accent: hex(l.accent, D.accent),
+    colors: { sup: hex(c.sup, D.colors.sup), night: hex(c.night, D.colors.night), sun: hex(c.sun, D.colors.sun), hol: hex(c.hol, D.colors.hol) },
+    displayFont: oneOf(l.displayFont, ['unbounded', 'manrope', 'system', 'serif'], D.displayFont),
+    bodyFont: oneOf(l.bodyFont, ['manrope', 'system'], D.bodyFont),
+    textScale: [0.9, 1, 1.1, 1.2, 1.3].includes(Number(l.textScale)) ? Number(l.textScale) : D.textScale,
+    radius: oneOf(l.radius, ['sharp', 'normal', 'round'], D.radius),
+    density: oneOf(l.density, ['comfort', 'compact'], D.density),
+    motion: typeof l.motion === 'boolean' ? l.motion : D.motion,
+  };
+}
+
 function normalizeSettings(s = {}) {
   const d = DEFAULT_SETTINGS;
   const r = s.reminder || {};
   return {
     netRate: Number.isFinite(Number(s.netRate)) ? Math.min(Math.max(Number(s.netRate), 0), 80) : d.netRate,
-    theme: ['dark', 'light', 'auto'].includes(s.theme) ? s.theme : d.theme,
+    theme: oneOf(s.theme, ['dark', 'black', 'light', 'auto'], d.theme),
     haptics: typeof s.haptics === 'boolean' ? s.haptics : d.haptics,
     rounding: [0, 5, 10, 15].includes(Number(s.rounding)) ? Number(s.rounding) : 0,
     reminder: {
@@ -55,6 +91,12 @@ function normalizeSettings(s = {}) {
       time: parseHM(r.time) === null ? d.reminder.time : r.time,
       days: Array.isArray(r.days) ? r.days.filter((x) => Number.isInteger(x) && x >= 0 && x <= 6) : d.reminder.days,
     },
+    holidayRegion: oneOf(s.holidayRegion, ['fr', 'alsace'], d.holidayRegion),
+    look: normalizeLook(s.look),
+    durationStyle: oneOf(s.durationStyle, ['hm', 'compact', 'decimal'], d.durationStyle),
+    hideMoney: !!s.hideMoney,
+    startTab: oneOf(s.startTab, ['/', '/history', '/summary', '/missions'], d.startTab),
+    historyView: oneOf(s.historyView, ['list', 'cal'], d.historyView),
     lastMissionId: s.lastMissionId || null,
     welcomed: !!s.welcomed,
   };
@@ -188,6 +230,20 @@ export const entry = (id) => state.entries.find((e) => e.id === id) || null;
 
 export function setSettings(patch) {
   commit({ ...state, settings: normalizeSettings({ ...state.settings, ...patch }) });
+}
+
+/** Calendrier des jours fériés : réglage global, appliqué à toutes les missions. */
+export function setHolidayRegion(region) {
+  const alsace = region === 'alsace';
+  commit({
+    ...state,
+    settings: normalizeSettings({ ...state.settings, holidayRegion: region }),
+    missions: state.missions.map((m) => normalizeMission({ ...m, holiday: { ...m.holiday, alsace } })),
+  });
+}
+
+export function setLook(patch) {
+  commit({ ...state, settings: normalizeSettings({ ...state.settings, look: { ...state.settings.look, ...patch } }) });
 }
 
 export function setTimer(timer, opts) {

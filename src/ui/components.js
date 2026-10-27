@@ -19,6 +19,8 @@ export function bigHead(title, { sub = '', actions = '' } = {}) {
   </header>`;
 }
 
+export const gearBtn = () => `<button class="ic-btn" data-go="#/settings" aria-label="Réglages">${icon('settings', 24)}</button>`;
+
 export const switchEl = (name, on, label = '') =>
   `<label class="switch" ${label ? `aria-label="${esc(label)}"` : ''}><input type="checkbox" name="${name}" ${on ? 'checked' : ''}><i></i></label>`;
 

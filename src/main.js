@@ -2,8 +2,10 @@
 import * as store from './core/store.js';
 import { initNav, go, back, goTab, canGoBack, current, refresh } from './ui/nav.js';
 import { icon } from './ui/icons.js';
-import { closeTopSheet } from './ui/dom.js';
-import { onLifecycle, exitApp, setSystemBars, setHaptics, privateBackup, isNative } from './platform.js';
+import { closeTopSheet, setHideMoney } from './ui/dom.js';
+import { onLifecycle, exitApp, setHaptics, privateBackup, isNative } from './platform.js';
+import { applyAppearance } from './ui/theme.js';
+import { setDurationStyle } from './core/time.js';
 import * as today from './views/today.js';
 import * as history from './views/history.js';
 import * as summary from './views/summary.js';
@@ -24,7 +26,7 @@ function resolve(route) {
   if (a === 'history') return { render: history.render, tab: '/history', live: true };
   if (a === 'summary') return { render: summary.render, tab: '/summary', live: true };
   if (a === 'missions') return { render: missions.renderList, tab: '/missions', live: true };
-  if (a === 'settings') return { render: settings.render, sub: true, parent: '#/' };
+  if (a === 'settings') return { render: settings.render, sub: true, parent: b ? '#/settings' : '#/' };
   if (a === 'entry' && b) return { render: entry.render, sub: true, parent: '#/history' };
   if (a === 'mission' && b && !c) return { render: missions.renderEditor, sub: true, parent: '#/missions' };
   if (a === 'mission' && b && c) return { render: missions.renderSection, sub: true, parent: `#/mission/${b}` };
@@ -63,17 +65,15 @@ function show(route, { keepScroll = false } = {}) {
   lastHash = hash;
 }
 
-// ---- thème -------------------------------------------------------------------------------------
+// ---- apparence -----------------------------------------------------------------------------------
 
-const mq = window.matchMedia?.('(prefers-color-scheme: light)');
-function applyTheme() {
-  const pref = store.get().settings.theme;
-  const light = pref === 'light' || (pref === 'auto' && mq?.matches);
-  document.documentElement.dataset.theme = light ? 'light' : 'dark';
-  setSystemBars(!light, light ? '#f3f4ee' : '#0b0d0c');
+function applyLook() {
+  const st = store.get().settings;
+  applyAppearance(st);
+  setDurationStyle(st.durationStyle);
+  setHideMoney(st.hideMoney);
 }
-mq?.addEventListener?.('change', applyTheme);
-document.addEventListener('fable:theme', applyTheme);
+document.addEventListener('fable:theme', applyLook);
 
 // ---- clics globaux -------------------------------------------------------------------------------
 
@@ -100,10 +100,16 @@ async function boot() {
   }
   store.setPersistHook((text) => privateBackup.write(text).catch(() => {}));
   setHaptics(store.get().settings.haptics);
-  applyTheme();
+  applyLook();
 
+  let lookKey = '';
   store.subscribe((s) => {
     setHaptics(s.settings.haptics);
+    const k = JSON.stringify([s.settings.theme, s.settings.look, s.settings.durationStyle, s.settings.hideMoney]);
+    if (k !== lookKey) {
+      lookKey = k;
+      applyLook();
+    }
     if (active?.tab) drawTabs(active.tab);
     if (active?.live) show(current(), { keepScroll: true });
   });
@@ -121,7 +127,9 @@ async function boot() {
     },
   });
 
+  const start = store.get().settings.startTab;
   initNav((route) => show(route));
+  if (start !== '/' && current().path === '/' && store.get().missions.length) goTab(`#${start}`);
   document.body.classList.add('ready');
 }
 

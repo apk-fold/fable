@@ -5,7 +5,7 @@ import { todayIso, nowHM, fmtDuration, weekRange, eachDay, DAYS_SHORT, cap, DAYS
 import { holidayName } from '../core/holidays.js';
 import { icon } from '../ui/icons.js';
 import { esc, money, toast, confirmSheet } from '../ui/dom.js';
-import { bigHead, missionChips, bindChips, entryCard } from '../ui/components.js';
+import { bigHead, missionChips, bindChips, entryCard, gearBtn } from '../ui/components.js';
 import { go } from '../ui/nav.js';
 import { haptic } from '../platform.js';
 import { loadDemo } from '../core/demo.js';
@@ -17,7 +17,7 @@ export function render(root) {
   const s = store.get();
   const t = todayIso();
   const [, mo, d] = ymd(t);
-  const head = bigHead("Aujourd'hui", { sub: `${cap(DAYS[(new Date().getDay() + 6) % 7])} ${d} ${MONTHS[mo - 1]}`, actions: `<button class="ic-btn" data-go="#/settings" aria-label="Réglages">${icon('settings', 24)}</button>` });
+  const head = bigHead("Aujourd'hui", { sub: `${cap(DAYS[(new Date().getDay() + 6) % 7])} ${d} ${MONTHS[mo - 1]}`, actions: gearBtn() });
 
   if (!s.missions.length) {
     root.innerHTML = `${head}${welcome()}`;

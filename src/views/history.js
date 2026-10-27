@@ -5,16 +5,17 @@ import { todayIso, ymd, pad, daysInMonth, monthLabel, weekStart, isoWeek, addDay
 import { holidayName } from '../core/holidays.js';
 import { icon } from '../ui/icons.js';
 import { esc, money, choiceSheet } from '../ui/dom.js';
-import { bigHead, entryCard, emptyState, seg, bindSeg } from '../ui/components.js';
+import { bigHead, entryCard, emptyState, seg, bindSeg, gearBtn } from '../ui/components.js';
 import { go } from '../ui/nav.js';
 
 let ym = null; // [année, mois]
 let filter = 'all';
-let mode = 'list';
+let mode = null; // liste ou calendrier (réglage « vue de l'historique » au démarrage)
 
 export function render(root, route) {
   const s = store.get();
   if (!ym) ym = ymd(todayIso()).slice(0, 2);
+  if (!mode) mode = s.settings.historyView;
   if (route.query.m && /^\d{4}-\d{2}$/.test(route.query.m)) ym = route.query.m.split('-').map(Number);
   if (filter !== 'all' && !store.mission(filter)) filter = 'all';
   const [y, m] = ym;
@@ -27,7 +28,7 @@ export function render(root, route) {
   const fm = filter === 'all' ? null : normalizeMission(store.mission(filter));
   const multi = s.missions.length > 1;
 
-  root.innerHTML = `${bigHead('Historique', { actions: seg('view', [['list', icon('list', 20)], ['cal', icon('grid', 20)]], mode, 'icons') })}
+  root.innerHTML = `${bigHead('Historique', { actions: `${seg('view', [['list', icon('list', 20)], ['cal', icon('grid', 20)]], mode, 'icons')}${gearBtn()}` })}
     <div class="filters">
       <div class="month-nav">
         <button class="ic-btn" data-act="prev" aria-label="Mois précédent">${icon('left', 22)}</button>
@@ -167,7 +168,7 @@ function calendar(y, m, rows, fm) {
     if (!byDate.has(r.date)) byDate.set(r.date, []);
     byDate.get(r.date).push(r);
   }
-  const alsace = fm ? fm.holiday.alsace : store.get().missions.some((mm) => mm.holiday?.alsace);
+  const alsace = fm ? fm.holiday.alsace : store.get().settings.holidayRegion === 'alsace';
   let cells = '';
   for (let i = 0; i < lead; i++) cells += '<span class="cal-cell blank"></span>';
   for (let d = 1; d <= n; d++) {

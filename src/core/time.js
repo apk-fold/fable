@@ -58,16 +58,23 @@ export function fmtHM(min) {
   return `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
 }
 
+let durationStyle = 'hm';
+/** Format d'affichage des durées : 'hm' (7 h 30), 'compact' (7h30) ou 'decimal' (7,5 h). */
+export const setDurationStyle = (st) => {
+  durationStyle = ['hm', 'compact', 'decimal'].includes(st) ? st : 'hm';
+};
+
 /** 450 → « 7 h 30 », 480 → « 8 h », 45 → « 45 min », 0 → « 0 h » */
-export function fmtDuration(min, { zero = '0 h', compact = false } = {}) {
+export function fmtDuration(min, { zero = '0 h', compact = false, style = durationStyle } = {}) {
   const m = Math.round(Math.abs(min));
   const sign = min < 0 ? '−' : '';
   if (m === 0) return zero;
+  if (style === 'decimal' && !compact) return `${sign}${(m / 60).toFixed(2).replace(/\.?0+$/, '').replace('.', ',')}\u00a0h`;
   const h = Math.floor(m / 60);
   const r = m % 60;
   if (h === 0) return `${sign}${r}\u00a0min`;
   if (r === 0) return `${sign}${h}\u00a0h`;
-  return compact ? `${sign}${h}h${pad(r)}` : `${sign}${h}\u00a0h\u00a0${pad(r)}`;
+  return compact || style === 'compact' ? `${sign}${h}h${pad(r)}` : `${sign}${h}\u00a0h\u00a0${pad(r)}`;
 }
 
 /** Heures décimales (pour les exports tableur) */

@@ -4,7 +4,7 @@ import { summarize, normalizeMission, CONTRACTS } from '../core/calc.js';
 import { todayIso, ymd, pad, weekRange, payPeriod, yearRange, addDays, isoWeek, monthLabel, fmtDuration, MONTHS_SHORT, eachDay, weekday, DAYS_SHORT, payMonthOf, fmtDateShort } from '../core/time.js';
 import { icon } from '../ui/icons.js';
 import { esc, money, pct, choiceSheet, sheet, toast } from '../ui/dom.js';
-import { bigHead, seg, bindSeg } from '../ui/components.js';
+import { bigHead, seg, bindSeg, gearBtn } from '../ui/components.js';
 import { haptic } from '../platform.js';
 
 let period = 'month';
@@ -43,7 +43,7 @@ export function render(root, route) {
   const t = sum.total;
   const multi = s.missions.length > 1;
 
-  root.innerHTML = `${bigHead('Résumé')}
+  root.innerHTML = `${bigHead('Résumé', { actions: gearBtn() })}
     ${seg('period', [['week', 'Semaine'], ['month', 'Mois'], ['year', 'Année']], period, 'wide')}
     <div class="period-nav">
       <button class="ic-btn" data-act="prev" aria-label="Précédent">${icon('left', 24)}</button>

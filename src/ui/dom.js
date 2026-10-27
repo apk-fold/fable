@@ -13,7 +13,12 @@ const dec2 = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumF
 const decMax = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
 
 const nb = (s) => s.replace(/\u202f/g, '\u00a0');
-export const money = (n) => nb(eur.format(Math.round((Number(n) + Number.EPSILON) * 100) / 100 || 0));
+let hideMoney = false;
+/** Mode discret : les montants sont masqués à l'écran (pas dans les exports). */
+export const setHideMoney = (v) => {
+  hideMoney = !!v;
+};
+export const money = (n, { force = false } = {}) => (hideMoney && !force ? '••••\u00a0€' : nb(eur.format(Math.round((Number(n) + Number.EPSILON) * 100) / 100 || 0)));
 export const num2 = (n) => nb(dec2.format(Number(n) || 0));
 export const numShort = (n) => nb(decMax.format(Number(n) || 0));
 export const pct = (n) => `${numShort(n)}\u00a0%`;

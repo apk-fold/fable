@@ -5,7 +5,7 @@ import { fmtDuration, parseHM, todayIso, fmtDateLong, cap } from '../core/time.j
 import { holidays } from '../core/holidays.js';
 import { icon } from '../ui/icons.js';
 import { esc, money, pct, numShort, parseDecimal, toast, confirmSheet, plural } from '../ui/dom.js';
-import { bigHead, subHead, row, seg, bindSeg, switchEl, field, info, contractLabel, emptyState } from '../ui/components.js';
+import { bigHead, subHead, row, seg, bindSeg, switchEl, field, info, contractLabel, emptyState, gearBtn } from '../ui/components.js';
 import { go, back } from '../ui/nav.js';
 import { haptic } from '../platform.js';
 
@@ -41,7 +41,7 @@ export function renderList(root) {
       ${icon('chevron', 18, 'row-chev')}
     </button>`;
   };
-  root.innerHTML = `${bigHead('Missions', { actions: `<button class="ic-btn" data-go="#/mission/new" aria-label="Nouvelle mission">${icon('plus', 26)}</button>` })}
+  root.innerHTML = `${bigHead('Missions', { actions: `<button class="ic-btn" data-go="#/mission/new" aria-label="Nouvelle mission">${icon('plus', 26)}</button>${gearBtn()}` })}
     ${
       activeList.length
         ? `<div class="mission-list">${activeList.map(card).join('')}</div>`
@@ -57,7 +57,7 @@ export function renderList(root) {
 function getDraft(id) {
   if (id === 'new') {
     if (!draft || !draft.isNew) {
-      draft = { isNew: true, data: normalizeMission({ id: '', color: store.nextColor(), contract: 'interim', night: { enabled: false } }) };
+      draft = { isNew: true, data: normalizeMission({ id: '', color: store.nextColor(), contract: 'interim', night: { enabled: false }, holiday: { enabled: false, alsace: store.get().settings.holidayRegion === 'alsace' } }) };
     }
     return draft;
   }
@@ -100,14 +100,14 @@ export function renderEditor(root, route) {
     ${field({ label: 'Nom de la mission', name: 'name', value: m.name, inputmode: 'text', placeholder: 'Ex. : Agent de quai — Manpower' })}
     <div class="field"><span class="field-label">Type de contrat</span>${seg('contract', Object.entries(CONTRACTS).map(([k, v]) => [k, v.label]), m.contract, 'wide accent')}</div>
     ${field({ label: 'Taux horaire brut', name: 'rate', value: m.rate ? String(m.rate).replace('.', ',') : '', suffix: '€/h', placeholder: '0,00' })}
-    <div class="field"><span class="field-label">Couleur</span><div class="swatches">${MISSION_COLORS.map((c) => `<button type="button" class="swatch ${c === m.color ? 'on' : ''}" data-color="${c}" style="--c:${c}" aria-label="Couleur ${c}"></button>`).join('')}</div></div>
+    <div class="field"><span class="field-label">Couleur</span><div class="swatches">${MISSION_COLORS.map((c) => `<button type="button" class="swatch ${c === m.color ? 'on' : ''}" data-color="${c}" style="--c:${c}" aria-label="Couleur ${c}"></button>`).join('')}<label class="swatch custom ${MISSION_COLORS.includes(m.color) ? '' : 'on'}" style="--c:${esc(m.color)}" aria-label="Autre couleur"><input type="color" name="mcolor" value="${esc(m.color.toLowerCase())}"></label></div></div>
 
     <h4 class="group">Majorations</h4>
     <div class="card list">
       ${row({ go: `${base}/overtime`, ic: 'plusCircle', icCls: 't-sup', title: 'Heures supplémentaires', sub: ot.enabled ? `Dès ${numShort(ot.t1.from)} h par ${ot.basis === 'day' ? 'jour' : 'semaine'}${ot.t2.enabled ? `, puis ${numShort(ot.t2.from)} h` : ''}` : 'Impacte le calcul du montant', value: onOff(ot.enabled, `${pct(ot.t1.pct)}${ot.t2.enabled ? ` / ${pct(ot.t2.pct)}` : ''}`), valueCls: 't-sup' })}
       ${row({ go: `${base}/night`, ic: 'moon', icCls: 't-night', title: 'Travail de nuit', sub: m.night.enabled ? `De ${m.night.start} à ${m.night.end}` : 'Heures dans une plage horaire', value: onOff(m.night.enabled, pct(m.night.pct)), valueCls: 't-night' })}
       ${row({ go: `${base}/sunday`, ic: 'calendar', icCls: 't-sun', title: 'Travail le dimanche', sub: 'Majoration des heures du dimanche', value: onOff(m.sunday.enabled, pct(m.sunday.pct)), valueCls: 't-sun' })}
-      ${row({ go: `${base}/holiday`, ic: 'flag', icCls: 't-hol', title: 'Jours fériés', sub: m.holiday.alsace ? 'Avec Alsace-Moselle' : 'Calendrier français', value: onOff(m.holiday.enabled, pct(m.holiday.pct)), valueCls: 't-hol' })}
+      ${row({ go: `${base}/holiday`, ic: 'flag', icCls: 't-hol', title: 'Jours fériés', sub: m.holiday.alsace ? 'Calendrier Alsace-Moselle' : 'Calendrier France (Paris)', value: onOff(m.holiday.enabled, pct(m.holiday.pct)), valueCls: 't-hol' })}
     </div>
 
     <h4 class="group">Indemnités</h4>
@@ -156,13 +156,22 @@ export function renderEditor(root, route) {
     renderEditor(root, route);
     if (withEnd) toast(`${v === 'cdd' ? 'Prime de précarité' : 'IFM'} et congés payés (10 % + 10 %) activés.`);
   });
+  const customSw = root.querySelector('.swatch.custom');
   root.querySelectorAll('[data-color]').forEach((b) => {
     b.onclick = () => {
       m.color = b.dataset.color;
       root.querySelectorAll('[data-color]').forEach((x) => x.classList.toggle('on', x === b));
+      customSw.classList.remove('on');
       haptic('select');
       persist();
     };
+  });
+  root.querySelector('[name=mcolor]').addEventListener('input', (e) => {
+    m.color = e.target.value.toUpperCase();
+    root.querySelectorAll('[data-color]').forEach((x) => x.classList.remove('on'));
+    customSw.classList.add('on');
+    customSw.style.setProperty('--c', m.color);
+    persist();
   });
   root.querySelector('[data-act=create]')?.addEventListener('click', () => {
     if (!m.name.trim()) {
@@ -436,9 +445,10 @@ const SECTIONS = {
     return `<section class="card">
       ${toggleHead('Majorer les jours fériés', 'holiday.enabled', m.holiday.enabled)}
       ${m.holiday.enabled ? `${numField('Majoration', 'holiday.pct', m.holiday.pct, '%')}${SPLIT(m)}${example(EXAMPLES.holiday(m), 'flag')}` : ''}
-      <div class="toggle-head sub">
-        <div><b>Alsace-Moselle</b><small>Ajoute le Vendredi saint et le 26 décembre.</small></div>
-        ${switchEl('holiday.alsace', m.holiday.alsace, 'Alsace-Moselle')}
+      <span class="field-label">Calendrier</span>
+      <div class="radios">
+        ${radioCard('holiday.alsace', 'false', String(m.holiday.alsace), 'France métropolitaine (Paris)', '11 jours fériés : 1ᵉʳ janvier, lundi de Pâques, 1ᵉʳ et 8 mai, Ascension, lundi de Pentecôte, 14 juillet, 15 août, 1ᵉʳ et 11 novembre, Noël.')}
+        ${radioCard('holiday.alsace', 'true', String(m.holiday.alsace), 'Alsace-Moselle', '13 jours : les mêmes + Vendredi saint et 26 décembre.')}
       </div>
     </section>
     <section class="card"><div class="card-head"><h3>Prochains jours fériés</h3></div>
