@@ -1,3 +1,4 @@
+import { initI18n } from './i18n.js';
 // Démarrage de Fable : données, thème, navigation, barre d'onglets, bouton retour.
 import * as store from './core/store.js';
 import { initNav, go, back, goTab, canGoBack, current, refresh } from './ui/nav.js';
@@ -12,6 +13,8 @@ import * as summary from './views/summary.js';
 import * as missions from './views/missions.js';
 import * as entry from './views/entry.js';
 import * as settings from './views/settings.js';
+
+initI18n({ app: 'fable', exclude: ['.entry-note', '.mission-name', '.mission-title'] });
 
 const TABS = [
   { hash: '#/', path: '/', label: 'Aujourd’hui', ic: 'today' },
