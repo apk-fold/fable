@@ -1,0 +1,178 @@
+
+> fable@1.0.0 test
+> node --test tests/*.test.js
+
+TAP version 13
+# Subtest: dates : semaine ISO, jour de la semaine, durées
+ok 1 - dates : semaine ISO, jour de la semaine, durées
+  ---
+  duration_ms: 1.207989
+  type: 'test'
+  ...
+# Subtest: période de paie décalée (du 21 au 20)
+ok 2 - période de paie décalée (du 21 au 20)
+  ---
+  duration_ms: 0.75303
+  type: 'test'
+  ...
+# Subtest: Pâques et jours fériés (Alsace-Moselle compris)
+ok 3 - Pâques et jours fériés (Alsace-Moselle compris)
+  ---
+  duration_ms: 0.392704
+  type: 'test'
+  ...
+# Subtest: journée qui passe minuit
+ok 4 - journée qui passe minuit
+  ---
+  duration_ms: 0.238061
+  type: 'test'
+  ...
+# Subtest: semaine des captures : sup à partir de 35 h, nuit et dimanche
+ok 5 - semaine des captures : sup à partir de 35 h, nuit et dimanche
+  ---
+  duration_ms: 5.102696
+  type: 'test'
+  ...
+# Subtest: deux paliers d’heures sup (25 % puis 50 % au-delà de 43 h)
+ok 6 - deux paliers d’heures sup (25 % puis 50 % au-delà de 43 h)
+  ---
+  duration_ms: 14.104523
+  type: 'test'
+  ...
+# Subtest: heures sup au jour (seuil journalier)
+ok 7 - heures sup au jour (seuil journalier)
+  ---
+  duration_ms: 0.672679
+  type: 'test'
+  ...
+# Subtest: jour férié majoré + pause retirée au prorata
+ok 8 - jour férié majoré + pause retirée au prorata
+  ---
+  duration_ms: 0.559678
+  type: 'test'
+  ...
+# Subtest: cumul : « garder la plus forte » au lieu d’additionner
+ok 9 - cumul : « garder la plus forte » au lieu d’additionner
+  ---
+  duration_ms: 1.431657
+  type: 'test'
+  ...
+# Subtest: dimanche « heure par heure » : seules les heures après minuit samedi→dimanche comptent
+ok 10 - dimanche « heure par heure » : seules les heures après minuit samedi→dimanche comptent
+  ---
+  duration_ms: 1.359629
+  type: 'test'
+  ...
+# Subtest: panier à partir d’un nombre d’heures + forçage manuel
+ok 11 - panier à partir d’un nombre d’heures + forçage manuel
+  ---
+  duration_ms: 0.61472
+  type: 'test'
+  ...
+# Subtest: fin de mission (IFM) et congés payés (ICCP) sur le brut, net estimé
+ok 12 - fin de mission (IFM) et congés payés (ICCP) sur le brut, net estimé
+  ---
+  duration_ms: 1.761798
+  type: 'test'
+  ...
+# Subtest: résumé multi-missions : un jour à deux employeurs compte pour un jour travaillé
+ok 13 - résumé multi-missions : un jour à deux employeurs compte pour un jour travaillé
+  ---
+  duration_ms: 0.586138
+  type: 'test'
+  ...
+# Subtest: les heures sup tiennent compte de la semaine à cheval sur deux mois
+ok 14 - les heures sup tiennent compte de la semaine à cheval sur deux mois
+  ---
+  duration_ms: 0.981636
+  type: 'test'
+  ...
+# Enregistrement impossible ReferenceError: localStorage is not defined
+#     at commit (file:///home/runner/work/fable/fable/src/core/store.js:150:5)
+#     at Module.replaceAll (file:///home/runner/work/fable/fable/src/core/store.js:161:3)
+#     at TestContext.<anonymous> (file:///home/runner/work/fable/fable/tests/store.test.js:25:9)
+#     at Test.runInAsyncScope (node:async_hooks:214:14)
+#     at Test.run (node:internal/test_runner/test:1047:25)
+#     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+#     at Test.postRun (node:internal/test_runner/test:1173:19)
+#     at Test.run (node:internal/test_runner/test:1101:12)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+# Enregistrement impossible ReferenceError: localStorage is not defined
+#     at commit (file:///home/runner/work/fable/fable/src/core/store.js:150:5)
+#     at Module.setHolidayRegion (file:///home/runner/work/fable/fable/src/core/store.js:238:3)
+#     at TestContext.<anonymous> (file:///home/runner/work/fable/fable/tests/store.test.js:26:9)
+#     at Test.runInAsyncScope (node:async_hooks:214:14)
+#     at Test.run (node:internal/test_runner/test:1047:25)
+#     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+#     at Test.postRun (node:internal/test_runner/test:1173:19)
+#     at Test.run (node:internal/test_runner/test:1101:12)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+# Enregistrement impossible ReferenceError: localStorage is not defined
+#     at commit (file:///home/runner/work/fable/fable/src/core/store.js:150:5)
+#     at Module.setHolidayRegion (file:///home/runner/work/fable/fable/src/core/store.js:238:3)
+#     at TestContext.<anonymous> (file:///home/runner/work/fable/fable/tests/store.test.js:29:9)
+#     at Test.runInAsyncScope (node:async_hooks:214:14)
+#     at Test.run (node:internal/test_runner/test:1047:25)
+#     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+#     at Test.postRun (node:internal/test_runner/test:1173:19)
+#     at Test.run (node:internal/test_runner/test:1101:12)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+# Enregistrement impossible ReferenceError: localStorage is not defined
+#     at commit (file:///home/runner/work/fable/fable/src/core/store.js:150:5)
+#     at Module.setLook (file:///home/runner/work/fable/fable/src/core/store.js:246:3)
+#     at TestContext.<anonymous> (file:///home/runner/work/fable/fable/tests/store.test.js:35:9)
+#     at Test.runInAsyncScope (node:async_hooks:214:14)
+#     at Test.run (node:internal/test_runner/test:1047:25)
+#     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+#     at Test.postRun (node:internal/test_runner/test:1173:19)
+#     at Test.run (node:internal/test_runner/test:1101:12)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+# Enregistrement impossible ReferenceError: localStorage is not defined
+#     at commit (file:///home/runner/work/fable/fable/src/core/store.js:150:5)
+#     at Module.setLook (file:///home/runner/work/fable/fable/src/core/store.js:246:3)
+#     at TestContext.<anonymous> (file:///home/runner/work/fable/fable/tests/store.test.js:36:9)
+#     at Test.runInAsyncScope (node:async_hooks:214:14)
+#     at Test.run (node:internal/test_runner/test:1047:25)
+#     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+#     at Test.postRun (node:internal/test_runner/test:1173:19)
+#     at Test.run (node:internal/test_runner/test:1101:12)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+# Subtest: une ancienne sauvegarde sans personnalisation reçoit les valeurs par défaut
+ok 15 - une ancienne sauvegarde sans personnalisation reçoit les valeurs par défaut
+  ---
+  duration_ms: 0.91823
+  type: 'test'
+  ...
+# Subtest: les réglages invalides sont remplacés
+ok 16 - les réglages invalides sont remplacés
+  ---
+  duration_ms: 0.187154
+  type: 'test'
+  ...
+# Subtest: le calendrier des fériés s’applique à toutes les missions
+ok 17 - le calendrier des fériés s’applique à toutes les missions
+  ---
+  duration_ms: 1.34756
+  type: 'test'
+  ...
+# Subtest: personnalisation : changement partiel des couleurs
+ok 18 - personnalisation : changement partiel des couleurs
+  ---
+  duration_ms: 0.398433
+  type: 'test'
+  ...
+# Subtest: format des durées
+ok 19 - format des durées
+  ---
+  duration_ms: 0.195025
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 668.057284

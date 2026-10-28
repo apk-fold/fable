@@ -1,0 +1,40 @@
+﻿Date;Jour;Mission;Début;Fin;Pause (min);Heures;Heures sup.;Heures de nuit;Heures dimanche;Heures fériées;Brut estimé (€);Panier (€);Trajet (€);Jour férié
+01/10/2026;JEU;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+03/10/2026;SAM;Agent de quai (exemple);21:00;05:00;30;7,50;2,50;7,50;0,00;0,00;148,80;6,00;0,00;
+05/10/2026;LUN;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+06/10/2026;MAR;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+07/10/2026;MER;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+08/10/2026;JEU;Agent de quai (exemple);21:00;05:30;30;8,00;0,00;8,00;0,00;0,00;148,80;6,00;0,00;
+10/10/2026;SAM;Préparateur (exemple);07:00;13:00;20;5,67;0,00;0,00;0,00;0,00;70,27;5,50;3,20;
+12/10/2026;LUN;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+13/10/2026;MAR;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+14/10/2026;MER;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+15/10/2026;JEU;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+17/10/2026;SAM;Agent de quai (exemple);21:00;05:00;30;7,50;2,50;7,50;0,00;0,00;148,80;6,00;0,00;
+18/10/2026;DIM;Agent de quai (exemple);21:00;05:30;30;8,00;8,00;8,00;8,00;0,00;247,38;6,00;0,00;
+19/10/2026;LUN;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+20/10/2026;MAR;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+21/10/2026;MER;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+22/10/2026;JEU;Agent de quai (exemple);21:00;05:30;30;8,00;0,00;8,00;0,00;0,00;148,80;6,00;0,00;
+24/10/2026;SAM;Préparateur (exemple);07:00;13:00;20;5,67;0,00;0,00;0,00;0,00;70,27;5,50;3,20;
+26/10/2026;LUN;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+27/10/2026;MAR;Agent de quai (exemple);21:00;05:00;30;7,50;0,00;7,50;0,00;0,00;139,50;6,00;0,00;
+
+Résumé Octobre 2026
+Heures travaillées;147,83 h
+dont heures sup.;13,00 h
+Heures de nuit;136,50 h
+Heures le dimanche;8,00 h
+Jours travaillés;20,00
+Salaire de base;2171,65 €
+Majoration heures sup.;57,66 €
+Majoration de nuit;507,78 €
+Majoration dimanche;59,52 €
+Salaire brut;2796,61 €
+Indemnité de fin de mission (IFM);279,66 €
+Indemnité de congés payés (ICCP);307,63 €
+Total brut estimé;3383,90 €
+Cotisations estimées (22 %);-744,46 €
+Paniers repas (20);119,00 €
+Indemnités de trajet (2);6,40 €
+Net estimé;2764,84 €
